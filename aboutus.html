@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us | CSESA</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    /* Navbar slide-down */
+    .navbar { animation: slideDown 1s ease forwards; }
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Fade-in animation */
+    .fade-in { animation: fadeIn 1.5s ease-in forwards; }
+    .fade-up { opacity: 0; transform: translateY(30px); animation: fadeUp 1s ease forwards; }
+    .fade-up:nth-child(1) { animation-delay: 0.2s; }
+    .fade-up:nth-child(2) { animation-delay: 0.4s; }
+    .fade-up:nth-child(3) { animation-delay: 0.6s; }
+    .fade-up:nth-child(4) { animation-delay: 0.8s; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Hero Section */
+    .hero-section {
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                  url("{{ url_for('static', filename='images/img.png') }}") no-repeat center center;
+      background-size: cover;
+      height: 350px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+    }
+    .hero-section h2 span { color: #17a2b8; }
+    .hero-section h2 { animation: zoomIn 1.2s ease forwards; }
+    .hero-section p { animation: zoomIn 1.5s ease forwards; }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    /* Navbar active link */
+    .navbar-nav .nav-link.active { font-weight: bold; color:  #ffffff !important; }
+    .nav-link:hover { color: lightblue !important; }
+
+    /* Hover effects */
+    .btn:hover, .card:hover { transform: scale(1.03); transition: 0.3s; }
+    .btn a { text-decoration: none; color: inherit; }
+
+    /* About Section */
+    .about-section { max-width: 900px; margin: 40px auto; padding: 20px; }
+    .about-section h2 { font-size: 1.6em; margin-top: 25px; color: #2c3e50; }
+    .about-section p { font-size: 1.05em; line-height: 1.6; color: #555; }
+
+    /* Footer */
+    footer h5 { margin: 0; font-size: 1.1em; }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+  <a class="navbar-brand d-flex align-items-center" href="/">
+    <img src="{{ url_for('static', filename='images/logo2.jpg') }}" alt="CSESA Logo" width="80" height="80" class="me-2 rounded-circle">
+  </a>
+
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav mx-auto">
+      <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+      <li class="nav-item"><a class="nav-link active" href="about">About Us</a></li>
+      <li class="nav-item"><a class="nav-link" href="media">Media</a></li>
+      <li class="nav-item"><a class="nav-link" href="faq">FAQ</a></li>
+      <li class="nav-item"><a class="nav-link" href="contact">Contact</a></li>
+    </ul>
+    <div class="d-flex">
+      <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-sm me-2">User Login</a>
+      <a href="{{ url_for('admin_login') }}" class="btn btn-danger btn-sm">Admin Login</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero-section fade-in">
+  <h2>About <span>CSESA</span></h2>
+  <p>Computer Science & Engineering Students Association</p>
+</section>
+
+<!-- About Section -->
+<section class="about-section fade-in">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        {% if section %}
+          <h2 class="fade-up">Our Vision</h2>
+          <p class="fade-up">{{ section['vision'] }}</p>
+
+          <h2 class="fade-up">Our Mission</h2>
+          <p class="fade-up">{{ section['mission'] }}</p>
+
+          <h2 class="fade-up">What We Do</h2>
+          <p class="fade-up">{{ section['what_we_do'] }}</p>
+
+          <h2 class="fade-up">Who Can Join?</h2>
+          <p class="fade-up">{{ section['who_can_join'] }}</p>
+        {% else %}
+          <p class="text-center text-muted">No About Us information available at the moment.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-dark text-white text-center py-3 fade-in">
+  <h5>Computer Science & Engineering Students Association</h5>
+  <p class="mb-0 small">Home | Events | Login</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

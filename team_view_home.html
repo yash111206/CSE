@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team Members - CSESA</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    .hero-section {
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                  url("{{ url_for('static', filename='images/img.png') }}") no-repeat center center;
+      background-size: cover;
+      height: 350px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      position: relative;
+    }
+    .back-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: linear-gradient(45deg, #0d6efd, #6610f2);
+      color: #fff !important;
+      border: none;
+      border-radius: 30px;
+      padding: 8px 18px;
+      font-weight: 500;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .back-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    .team-card {
+      background:#FFDA9E ;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: center;
+      padding: 25px 15px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .team-card:hover {
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    }
+    .team-photo {
+      width: 130px;
+      height: 130px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 15px;
+      transition: transform 0.5s;
+    }
+    .team-card:hover .team-photo {
+      transform: scale(1.1) rotate(2deg);
+    }
+    .team-name { font-weight: 600; font-size: 1.25rem; margin-bottom: 5px; }
+    .team-role { color: #FF0000
+    ; font-size: 1rem; margin-bottom: 8px; }
+    .team-email, .team-phone, .team-number { color: #000000; font-size: 0.9rem; margin-bottom: 12px; }
+    .team-social a { color: #0d6efd; margin: 0 6px; font-size: 1.2rem; transition: color 0.3s; }
+    .team-social a:hover { color: #6610f2; }
+  </style>
+</head>
+<body>
+
+<section class="hero-section fade-in">
+  <a href="{{ url_for('home') }}" class="btn back-btn">← Back</a>
+  <div class="text-center">
+    <h2>👥 Meet Our Team <span class="text-info">CSESA</span></h2>
+    <p>The CSESA Club members making things happen</p>
+  </div>
+</section>
+
+<div class="container">
+
+  <!-- Core Team -->
+  <h2 class="mb-4 text-center">👑 Core Team</h2>
+  <div class="row g-4 justify-content-center">
+    {% for member in core_team %}
+    <div class="col-md-3 col-sm-6">
+      <div class="team-card">
+        <img src="{{ url_for('static', filename='uploads/team/' ~ (member.photo or 'default-member.jpg')) }}" class="team-photo">
+        <h5 class="team-name">{{ member.name or 'Not Assigned' }}</h5>
+        <p class="team-role">{{ member.role or 'Not Assigned' }}</p>
+        <p class="team-phone">{{ member.phone_number or 'Not Assigned' }}</p>
+        <div class="team-social">
+          {% if member.linkedin %}<a href="{{ member.linkedin }}" target="_blank"><i class="bi bi-linkedin"></i></a>{% endif %}
+          {% if member.github %}<a href="{{ member.github }}" target="_blank"><i class="bi bi-github"></i></a>{% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+<!-- Fixed Special Positions -->
+<h2 class="mt-5 mb-4 text-center">📌 Special Positions</h2>
+<div class="row g-4 justify-content-center">
+  {% for role in fixed_roles %}
+    {% set member = members.get(role) %}
+    <div class="col-md-3 col-sm-6">
+      <div class="team-card">
+        <img src="{{ url_for('static', filename='uploads/team/' ~ (member.photo if member else 'default-member.jpg')) }}" class="team-photo">
+        <h5 class="team-name">{{ member.name if member else 'Not Assigned' }}</h5>
+        <p class="team-role">{{ role }}</p>
+        <p class="team-phone">{{ member.phone_number if member else 'Not Assigned' }}</p>
+        <div class="team-social">
+          {% if member and member.linkedin %}
+            <a href="{{ member.linkedin }}" target="_blank"><i class="bi bi-linkedin"></i></a>
+          {% endif %}
+          {% if member and member.github %}
+            <a href="{{ member.github }}" target="_blank"><i class="bi bi-github"></i></a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+
+  <!-- Other Members -->
+  {% if other_members %}
+  <h2 class="mt-5 mb-4 text-center">🧑‍🤝‍🧑 Our Team Members</h2>
+  <div class="row g-4 justify-content-center">
+    {% for member in other_members %}
+    <div class="col-md-3 col-sm-6">
+      <div class="team-card">
+        <img src="{{ url_for('static', filename='uploads/team/' ~ (member.photo or 'default-member.jpg')) }}" class="team-photo">
+        <h5 class="team-name">{{ member.name or 'Not Assigned' }}</h5>
+        <p class="team-role">{{ member.role or 'Not Assigned' }}</p>
+        <p class="team-number">{{ member.phone_number or 'Not Assigned' }}</p>
+        <div class="team-social">
+          {% if member.linkedin %}<a href="{{ member.linkedin }}" target="_blank"><i class="bi bi-linkedin"></i></a>{% endif %}
+          {% if member.github %}<a href="{{ member.github }}" target="_blank"><i class="bi bi-github"></i></a>{% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

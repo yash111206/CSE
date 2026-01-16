@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transactions - Admin</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+  body { background: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
+  h4 { margin-bottom: 25px; }
+  table { background: #fff; }
+  .form-select, .form-control { min-width: 120px; }
+  .update-btn { white-space: nowrap; }
+  .table thead th { vertical-align: middle; text-align: center; }
+  .table tbody td { vertical-align: middle; text-align: center; }
+  .top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+</style>
+</head>
+<body>
+
+<div class="container mt-5">
+
+  <div class="top-bar">
+    <h4 class="text-center flex-grow-1">💳 Transactions</h4>
+    <div style="width: 85px;"></div>
+  </div>
+
+  <form method="get" class="row g-2 mb-4">
+    <div class="col-md-4">
+      <input type="text" name="search_name" class="form-control" placeholder="Search by name/email" value="{{ search_name }}">
+    </div>
+    <div class="col-md-4">
+      <select name="filter_event" class="form-select">
+        <option value="">All Events</option>
+        {% for e in events_list %}
+          <option value="{{ e }}" {% if e == filter_event %}selected{% endif %}>{{ e }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-4 d-grid">
+      <button type="submit" class="btn btn-primary">Search / Filter</button>
+    </div>
+  </form>
+
+<div class="table-responsive">
+  <table class="table table-bordered table-hover align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Participant</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Selected Events</th>
+        <th>Payment Method</th>
+        <th>Payment Status</th>
+        <th>Update</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for t in transactions %}
+      <tr>
+        <td>{{ t.id }}</td>
+        <td>{{ t.name }}</td>
+        <td>{{ t.email }}</td>
+        <td>{{ t.phone_number }}</td>
+        <td>{{ t.selected_events }}</td>
+        <td>{{ t.payment_method }}</td>
+        <td>{{ t.payment_status }}</td>
+        <td>
+          <form method="post" class="d-flex justify-content-center align-items-center">
+            <input type="hidden" name="participant_id" value="{{ t.id }}">
+            <select name="payment_method" class="form-select me-2" required>
+              <option value="Cash" {% if t.payment_method=='Cash' %}selected{% endif %}>Cash</option>
+              <option value="Online" {% if t.payment_method=='Online' %}selected{% endif %}>Online</option>
+            </select>
+            <select name="payment_status" class="form-select me-2" required>
+              <option value="Pending" {% if t.payment_status=='Pending' %}selected{% endif %}>Pending</option>
+              <option value="Paid" {% if t.payment_status=='Paid' %}selected{% endif %}>Paid</option>
+            </select>
+            <button type="submit" name="update_status" class="btn btn-success btn-sm">Update</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="8" class="text-center text-muted">No transactions found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="text-center mt-4">
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary btn-back">
+      <i class="bi bi-arrow-left"></i> Back
+    </a>
+    </div>
+</div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin About Sections | CSESA</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+  <h2>About Sections</h2>
+  <table class="table table-bordered table-hover mt-3">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Vision</th>
+        <th>Mission</th>
+        <th>What We Do</th>
+        <th>Who Can Join</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for section in about_sections %}
+      <tr>
+        <td>{{ section['id'] }}</td>
+        <td>{{ section['vision']|truncate(50) }}</td>
+        <td>{{ section['mission']|truncate(50) }}</td>
+        <td>{{ section['what_we_do']|truncate(50) }}</td>
+        <td>{{ section['who_can_join']|truncate(50) }}</td>
+        <td>
+          <!-- Correct: always pass id -->
+          <a href="{{ url_for('edit_about', id=section['id']) }}" class="btn btn-primary btn-sm">Edit</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+<div class="text-center mt-4">
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary btn-back">
+      <i class="bi bi-arrow-left"></i> Back
+    </a>
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

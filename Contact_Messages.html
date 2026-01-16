@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Contact Info - CSESA Admin</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    body {
+        background: #f4f6f9;
+        font-family: 'Segoe UI', sans-serif;
+    }
+    .card {
+        border-radius: 15px;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        transition: all 0.3s ease-in-out;
+    }
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+    .form-control:focus {
+        box-shadow: 0 0 5px rgba(13,110,253,0.5);
+        border-color: #0d6efd;
+    }
+    h2 {
+        font-weight: 600;
+        margin-bottom: 30px;
+    }
+    .btn-back {
+        margin-bottom: 20px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Edit Contact Information</h2>
+=    </div>
+
+    <div class="card p-4">
+        <form method="POST">
+            <!-- General Info -->
+            <div class="mb-3">
+                <label>Email</label>
+                <input type="email" name="email" value="{{ contact.email }}" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Phone</label>
+                <input type="text" name="phone" value="{{ contact.phone }}" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Office</label>
+                <input type="text" name="office" value="{{ contact.office }}" class="form-control" required>
+            </div>
+
+            <!-- Social Links -->
+            <hr>
+            <h5>Social Media Links</h5>
+            <div class="mb-3">
+                <label>Instagram</label>
+                <input type="text" name="instagram" value="{{ contact.instagram }}" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label>LinkedIn</label>
+                <input type="text" name="linkedin" value="{{ contact.linkedin }}" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label>YouTube</label>
+                <input type="text" name="youtube" value="{{ contact.youtube }}" class="form-control">
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Update Contact Info</button>
+        </form>
+    </div>
+</div>
+<div class="text-center mt-4">
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary btn-back">
+      <i class="bi bi-arrow-left"></i> Back
+    </a>
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

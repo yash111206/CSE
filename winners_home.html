@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Last Year Winners - CSESA</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    .hero-section {
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                  url("{{ url_for('static', filename='images/img.png') }}") no-repeat center center;
+      background-size: cover;
+      height: 350px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      position: relative;
+    }
+
+    /* Hero title */
+    .hero-section h2 {
+      font-weight: 700;
+      font-size: 2.5rem;
+    }
+    .hero-section p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
+
+    /* Winner Card */
+    .winner-card {
+      border-radius: 15px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      transition: all 0.3s ease-in-out;
+      border: 2px solid transparent;
+      background: #fff;
+    }
+    .winner-card:hover {
+      transform: translateY(-8px) scale(1.03);
+      border-color: #d4af37;
+      box-shadow: 0 8px 20px rgba(212, 175, 55, 0.25);
+    }
+    .winner-img {
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      margin-bottom: 15px;
+      border: 4px solid #f1f1f1;
+      transition: all 0.4s ease-in-out;
+    }
+    .winner-card:hover .winner-img {
+      transform: scale(1.1) rotate(3deg);
+    }
+
+    /* Position Badges */
+    .badge {
+      font-size: 0.9rem;
+      padding: 8px 12px;
+      border-radius: 50px;
+    }
+    .badge.bg-gold { background-color: #d4af37; color: #fff; }
+    .badge.bg-silver { background-color: #c0c0c0; color: #fff; }
+    .badge.bg-bronze { background-color: #cd7f32; color: #fff; }
+
+    /* Back Button */
+    .btn-back {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      border-radius: 50px;
+      padding: 8px 20px;
+      background: linear-gradient(45deg, #0d6efd, #6610f2);
+      color: #fff !important;
+      border: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    .btn-back:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Hero Section -->
+<section class="hero-section fade-in">
+  <a href="{{ url_for('home') }}" class="btn btn-back">← Back</a>
+  <h2>🏆 Last Year Winners <span class="text-info">CSESA</span></h2>
+  <p>Celebrating the champions of CSESA with pride and excitement</p>
+</section>
+
+<!-- Winners Grid -->
+<div class="container my-5">
+  <div class="row g-4">
+    {% for w in winners %}
+    <div class="col-md-4 col-sm-6 text-center">
+      <div class="p-4 winner-card h-100">
+        {% if w.photo %}
+          <img src="{{ url_for('static', filename='images/winners/' ~ w.photo) }}" alt="{{ w.name }}" class="winner-img">
+        {% else %}
+          <img src="{{ url_for('static', filename='images/default-winner.jpg') }}" alt="{{ w.name }}" class="winner-img">
+        {% endif %}
+          <h5 class="fw-bold">{{ w.name }}</h5>
+          <p class="text-muted mb-1">{{ w.event_name }}</p>
+
+          {% if w.position == '1st' %}
+            <span class="badge bg-gold">🥇 {{ w.position }}</span>
+          {% elif w.position == '2nd' %}
+            <span class="badge bg-silver">🥈 {{ w.position }}</span>
+          {% elif w.position == '3rd' %}
+            <span class="badge bg-bronze">🥉 {{ w.position }}</span>
+          {% else %}
+            <span class="badge bg-dark">{{ w.position }}</span>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSESA Event Platform</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    /* Hero Section */
+    .hero-section {
+      background: url("{{ url_for('static', filename='images/img.png') }}") no-repeat center center;
+      background-size: cover;
+      height: 350px;
+      position: relative;
+    }
+    .hero-section .overlay {
+      background: rgba(0, 0, 0, 0.7);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    /* Fade-in */
+    .fade-in {
+      animation: fadeIn 1.5s ease-in forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Navbar slide-down */
+    .navbar {
+      animation: slideDown 1s ease forwards;
+    }
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Hero text zoom-in */
+    .hero-section .overlay h2,
+    .hero-section .overlay p {
+      animation: zoomIn 1.2s ease forwards;
+    }
+    @keyframes zoomIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    /* Cards fade-up */
+    .card {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 1s ease forwards;
+    }
+    .card:nth-child(1) { animation-delay: 0.2s; }
+    .card:nth-child(2) { animation-delay: 0.4s; }
+    .card:nth-child(3) { animation-delay: 0.6s; }
+    .card:nth-child(4) { animation-delay: 0.8s; }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Hover effects */
+    .feature-buttons .btn:hover,
+    .card:hover {
+      transform: scale(1.05);
+      transition: transform 0.3s ease;
+    }
+
+    /* Button bounce on hover */
+    .btn:hover {
+      animation: bounce 0.4s;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    /* Navbar hover link */
+    .nav-link:hover { color: lightblue !important; }
+
+    /* Remove underline inside buttons */
+    .btn a { text-decoration: none; color: inherit; }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+  <a class="navbar-brand d-flex align-items-center" href="/">
+    <img src="{{ url_for('static', filename='images/logo2.jpg') }}" alt="CSESA Logo" width="80" height="80" class="me-2 rounded-circle">
+  </a>
+
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav mx-auto">
+      <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+      <li class="nav-item"><a class="nav-link" href="about">About Us</a></li>
+      <li class="nav-item"><a class="nav-link" href="media">Media</a></li>
+      <li class="nav-item"><a class="nav-link" href="faq">FAQ</a></li>
+      <li class="nav-item"><a class="nav-link" href="contact">Contact</a></li>
+    </ul>
+
+    <div class="d-flex">
+      <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-sm me-2">User Login</a>
+      <a href="{{ url_for('admin_login') }}" class="btn btn-danger btn-sm">Admin Login</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero-section fade-in">
+  <div class="overlay">
+    <h2 class="text-white">Welcome to <span class="text-info">CSESA</span></h2>
+    <p class="text-white">Computer Science & Engineering Students Association</p>
+  </div>
+</section>
+
+<!-- Key Features -->
+<section class="text-center py-4 fade-in">
+  <h3>Key Features</h3>
+  <div class="d-flex justify-content-center gap-3 flex-wrap mt-3 feature-buttons">
+    {% if logged_in %}
+      <a href="{{ url_for('event_registration') }}" class="btn btn-warning">🎯 Event Registration</a>
+    {% else %}
+      <a href="{{ url_for('login') }}" class="btn btn-warning">🎯 Event Registration</a>
+    {% endif %}
+    <a href="{{ url_for('u_coordinators') }}" class="btn btn-secondary">📅 Event Coordinators</a>
+    <a href="{{ url_for('year_winners') }}" class="btn btn-success">🏆 Last Year Winners</a>
+    <a href="{{ url_for('team_view_home') }}" class="btn btn-secondary">👥 Meet Our Team</a>
+  </div>
+</section>
+
+<!-- Upcoming Events -->
+<section class="container mb-5" id="events">
+  <h3 class="text-center mb-4">Upcoming Events</h3>
+  <div class="row g-4 justify-content-center">
+    {% for event in events_list %}
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+      <div class="card p-3 text-center">
+        <h5>{{ event.name }}</h5>
+        <p>{{ event.date }} | {{ event.venue }}</p>
+        <p>Fee: ₹{{ event.fee }}</p>
+        <a href="{{ url_for('login') }}" class="btn btn-primary">Apply Now</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- How It Works -->
+<section class="text-center py-4 fade-in">
+  <h3>How It Works</h3>
+  <div class="mx-auto bg-light p-3 border rounded" style="width: 250px;">
+    <ol class="text-start mb-0 small">
+      <li>Sign Up</li>
+      <li>Browse Events</li>
+      <li>Register & Pay</li>
+      <li>Get Confirmation</li>
+    </ol>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-dark text-white text-center py-3 fade-in">
+  <h3 class="mb-2">Computer Science & Engineering Students Association</h3>
+  <p class="mb-0 small">Home | Events | Login</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
